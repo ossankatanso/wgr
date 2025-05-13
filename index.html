@@ -65,6 +65,26 @@
     #nameInputs {
       margin-bottom: 20px;
     }
+    .multi-card {
+  display: grid;
+  grid-template-columns: 1fr; /* 1列表示 */
+  gap: 8px;
+}
+
+.player-entry {
+  border-top: 1px solid #ddd;
+  padding-top: 6px;
+}
+
+.player-entry:first-child {
+  border-top: none;
+}
+@media (max-width: 600px) {
+  .card {
+    font-size: 10px;
+    padding: 5px;
+  }
+}
   </style>
 </head>
 <body>
@@ -241,7 +261,7 @@
     "サブ性能アップ", "相手インク影響軽減", "サブ影響軽減", "アクション強化"
   ];
 
- function runRoulette() {
+function runRoulette() {
     const inputs = document.querySelectorAll('#nameInputs input');
     const resultsDiv = document.getElementById('results');
     resultsDiv.innerHTML = "";
