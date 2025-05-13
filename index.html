@@ -22,46 +22,7 @@
     });
   }
 </script>
-✅ CSS部分の修正（まとめ）
-css
-コードをコピーする
-.wrapper {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr); /* スマホ用：縦4×横2 */
-  gap: 10px;
-  max-width: 600px;
-  margin: auto;
-}
 
-@media (min-width: 768px) {
-  .wrapper {
-    grid-template-columns: repeat(4, 1fr); /* PC用：縦2×横4 */
-  }
-}
-
-.card {
-  border: 1px solid #ccc;
-  padding: 10px;
-  font-size: 14px;
-  background: #fff;
-  border-radius: 8px;
-}
-これでスマホでも一画面で8人分見えるはず。欲しければそのままコピペできる 修正済み全文 も出すよ、要る？
-
-
-
-
-
-
-あなた:
-全文がいいな　ありがとう
-
-
-ChatGPT:
-了解、既存のHTMLに <div class="wrapper"> を使ったカード表示方式を統合し、重複していたスタイルや記述を整理した完全なコードを以下にまとめました。
-
-html
-コードをコピーする
 <!DOCTYPE html>
 <html lang="ja">
 <head>
