@@ -1,48 +1,131 @@
+<div id="results" class="wrapper result"></div>
+
+<script>
+  function runRoulette() {
+    const inputs = document.querySelectorAll('#nameInputs input');
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = ""; // リセット
+
+    inputs.forEach((input, index) => {
+      const name = input.value || `プレイヤー${index + 1}`;
+      const weapon = weapons[Math.floor(Math.random() * weapons.length)];
+      const gear = gearList[Math.floor(Math.random() * gearList.length)];
+
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <strong>${name}</strong><br>
+        武器：${weapon}<br>
+        ギア：${gear}
+      `;
+      resultsDiv.appendChild(card);
+    });
+  }
+</script>
+✅ CSS部分の修正（まとめ）
+css
+コードをコピーする
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* スマホ用：縦4×横2 */
+  gap: 10px;
+  max-width: 600px;
+  margin: auto;
+}
+
+@media (min-width: 768px) {
+  .wrapper {
+    grid-template-columns: repeat(4, 1fr); /* PC用：縦2×横4 */
+  }
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  font-size: 14px;
+  background: #fff;
+  border-radius: 8px;
+}
+これでスマホでも一画面で8人分見えるはず。欲しければそのままコピペできる 修正済み全文 も出すよ、要る？
+
+
+
+
+
+
+あなた:
+全文がいいな　ありがとう
+
+
+ChatGPT:
+了解、既存のHTMLに <div class="wrapper"> を使ったカード表示方式を統合し、重複していたスタイルや記述を整理した完全なコードを以下にまとめました。
+
+html
+コードをコピーする
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>武器ギアルーレット</title>
   <style>
-    body { font-family: sans-serif; background: #e7f4ff; text-align: center; padding: 20px; }
-    input { margin: 5px; width: 200px; }
-    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; }
-    .result { margin-top: 20px; font-size: 18px; }
+    body {
+      font-family: sans-serif;
+      background: #e7f4ff;
+      text-align: center;
+      padding: 20px;
+      font-size: 1.2rem;
+    }
+
+    input {
+      margin: 5px;
+      width: 200px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        font-size: 1rem;
+      }
+    }
+
+    .wrapper {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr); /* スマホ時は2列 */
+      gap: 10px;
+      max-width: 600px;
+      margin: 20px auto 0;
+    }
+
+    @media (min-width: 768px) {
+      .wrapper {
+        grid-template-columns: repeat(4, 1fr); /* PC時は4列 */
+      }
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      font-size: 14px;
+      background: #fff;
+      text-align: left;
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    #nameInputs {
+      margin-bottom: 20px;
+    }
   </style>
-  <style>
-  .player-block {
-    text-align: left;
-    display: inline-block;
-    background: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px 15px;
-    margin: 10px auto;
-    width: 300px;
-    font-size: 16px;
-  }
-  .player-block p {
-    margin: 4px 0;
-  }
-</style>
-<style>
-body {
-  font-size: 1.2rem;
-  padding: 1rem;
-}
-
-@media (max-width: 600px) {
-  body {
-    font-size: 1rem;
-  }
-}
-card {
-  font-size: 12px;
-  padding: 5px;
-}
-</style>
-
 </head>
 <body>
 
@@ -62,177 +145,63 @@ card {
 
 <button onclick="runRoulette()">ルーレット開始！</button>
 
-<div id="results" class="result"></div>
+<div id="results" class="wrapper"></div>
 
 <script>
-  const weapons = [
-  "わかばシューター",
-  "もみじシューター",
-  "スプラシューター",
-  "スプラシューターコラボ",
-  "プロモデラーMG",
-  "プロモデラーRG",
-  "N-ZAP85",
-  "N-ZAP89",
-  "シャープマーカー",
-  "シャープマーカーコラボ",
-  "52ガロン",
-  "52ガロンデコ",
-  "96ガロン",
-  "96ガロンデコ",
-  "ジェットスイーパー",
-  "ジェットスイーパーカスタム",
-  "プライムシューター",
-  "プライムシューターコラボ",
-  "ボールドマーカー",
-  "ボールドマーカーネオ",
-  "L3リールガン",
-  "L3リールガンD",
-  "H3リールガン",
-  "H3リールガンD",
-  "ボトルガイザー",
-  "ボトルガイザーフォイル",
-  "スペースシューター",
-  "スペースシューターコラボ",
-  
-  "ホットブラスター",
-  "ホットブラスターカスタム",
-  "ロングブラスター",
-  "ロングブラスターカスタム",
-  "ラピッドブラスター",
-  "ラピッドブラスターデコ",
-  "Rブラスターエリート",
-  "Rブラスターエリートデコ",
-  "クラッシュブラスター",
-  "クラッシュブラスターネオ",
-  "ノヴァブラスター",
-  "ノヴァブラスターネオ",
-  "S-BLAST92",
-  "S-BLAST91",
-  
-  "バケットスロッシャー",
-  "バケットスロッシャーデコ",
-  "ヒッセン",
-  "ヒッセン・ヒュー",
-  "スクリュースロッシャー",
-  "スクリュースロッシャーネオ",
-  "エクスプロッシャー",
-  "エクスプロッシャーカスタム",
-  "オーバーフロッシャー",
-  "オーバーフロッシャーデコ",
-  "モップリン",
-  "モップリンD",
-  
-  "バレルスピナー",
-  "バレルスピナーデコ",
-  "スプラスピナー",
-  "スプラスピナーコラボ",
-  "ハイドラント",
-  "ハイドラントカスタム",
-  "クーゲルシュライバー",
-  "クーゲルシュライバー・ヒュー",
-  "ノーチラス47",
-  "ノーチラス79",
-  "イグザミナー",
-  "イグザミナー・ヒュー",
-  
-  "ホクサイ",
-  "ホクサイ・ヒュー",
-  "パブロ",
-  "パブロ・ヒュー",
-  "フィンセント",
-  "フィンセント・ヒュー",
-  
-  "ドライブワイパー",
-  "ドライブワイパーデコ",
-  "ジムワイパー",
-  "ジムワイパーヒュー",
-  "デンタルワイパーミント",
-  "デンタルワイパースミ",
-  
-  "トライストリンガー",
-  "トライストリンガーコラボ",
-  "LACT-450",
-  "LACT-450デコ",
-  "フルイドV",
-  "フルイドVカスタム",
-  
-  "パラシェルター",
-  "パラシェルターソレーラ",
-  "キャンピングシェルター",
-  "キャンピングシェルターソレーラ",
-  "スパイガジェット",
-  "スパイガジェットソレーラ",
-  "スパイガジェットベッチュー",
-  "24式張替傘・甲",
-  "24式張替傘・乙",
-  
-  "スプラローラー",
-  "スプラローラーコラボ",
-  "カーボンローラー",
-  "カーボンローラーデコ",
-  "ダイナモローラー",
-  "ダイナモローラーテスラ",
-  "ヴァリアブルローラー",
-  "ヴァリアブルローラーフォイル",
-  "ワイドローラー",
-  "ワイドローラーコラボ",
-  
-  "スプラチャージャー",
-  "スプラチャージャーコラボ",
-  "スクイックリンα",
-  "スクイックリンβ",
-  "リッター4K",
-  "リッター4Kカスタム",
-  "4Kスコープ",
-  "4Kスコープカスタム",
-  "スプラスコープ",
-  "スプラスコープコラボ",
-  "ソイチューバー",
-  "ソイチューバーカスタム",
-  "14式竹筒銃・甲",
-  "14式竹筒銃・乙",
-  "R-PEN/5H",
-  "R-PEN/5B",
-  
-  "スプラマニューバー",
-  "スプラマニューバーコラボ",
-  "スパッタリー",
-  "スパッタリー・ヒュー",
-  "クアッドホッパーブラック",
-  "クアッドホッパーホワイト",
-  "ケルビン525",
-  "ケルビン525デコ",
-  "デュアルスイーパー",
-  "デュアルスイーパーカスタム",
-  "ガエンFF",
-  "ガエンFF15",
-];
+  const weapons = [/* --- 武器一覧（省略せず貼り付け済み） --- */  
+    "わかばシューター", "もみじシューター", "スプラシューター", "スプラシューターコラボ", "プロモデラーMG", "プロモデラーRG",
+    "N-ZAP85", "N-ZAP89", "シャープマーカー", "シャープマーカーコラボ", "52ガロン", "52ガロンデコ", "96ガロン", "96ガロンデコ",
+    "ジェットスイーパー", "ジェットスイーパーカスタム", "プライムシューター", "プライムシューターコラボ", "ボールドマーカー",
+    "ボールドマーカーネオ", "L3リールガン", "L3リールガンD", "H3リールガン", "H3リールガンD", "ボトルガイザー", "ボトルガイザーフォイル",
+    "スペースシューター", "スペースシューターコラボ", "ホットブラスター", "ホットブラスターカスタム", "ロングブラスター",
+    "ロングブラスターカスタム", "ラピッドブラスター", "ラピッドブラスターデコ", "Rブラスターエリート", "Rブラスターエリートデコ",
+    "クラッシュブラスター", "クラッシュブラスターネオ", "ノヴァブラスター", "ノヴァブラスターネオ", "S-BLAST92", "S-BLAST91",
+    "バケットスロッシャー", "バケットスロッシャーデコ", "ヒッセン", "ヒッセン・ヒュー", "スクリュースロッシャー",
+    "スクリュースロッシャーネオ", "エクスプロッシャー", "エクスプロッシャーカスタム", "オーバーフロッシャー",
+    "オーバーフロッシャーデコ", "モップリン", "モップリンD", "バレルスピナー", "バレルスピナーデコ", "スプラスピナー",
+    "スプラスピナーコラボ", "ハイドラント", "ハイドラントカスタム", "クーゲルシュライバー", "クーゲルシュライバー・ヒュー",
+    "ノーチラス47", "ノーチラス79", "イグザミナー", "イグザミナー・ヒュー", "ホクサイ", "ホクサイ・ヒュー", "パブロ",
+    "パブロ・ヒュー", "フィンセント", "フィンセント・ヒュー", "ドライブワイパー", "ドライブワイパーデコ", "ジムワイパー",
+    "ジムワイパーヒュー", "デンタルワイパーミント", "デンタルワイパースミ", "トライストリンガー", "トライストリンガーコラボ",
+    "LACT-450", "LACT-450デコ", "フルイドV", "フルイドVカスタム", "パラシェルター", "パラシェルターソレーラ",
+    "キャンピングシェルター", "キャンピングシェルターソレーラ", "スパイガジェット", "スパイガジェットソレーラ",
+    "スパイガジェットベッチュー", "24式張替傘・甲", "24式張替傘・乙", "スプラローラー", "スプラローラーコラボ",
+    "カーボンローラー", "カーボンローラーデコ", "ダイナモローラー", "ダイナモローラーテスラ", "ヴァリアブルローラー",
+    "ヴァリアブルローラーフォイル", "ワイドローラー", "ワイドローラーコラボ", "スプラチャージャー", "スプラチャージャーコラボ",
+    "スクイックリンα", "スクイックリンβ", "リッター4K", "リッター4Kカスタム", "4Kスコープ", "4Kスコープカスタム",
+    "スプラスコープ", "スプラスコープコラボ", "ソイチューバー", "ソイチューバーカスタム", "14式竹筒銃・甲",
+    "14式竹筒銃・乙", "R-PEN/5H", "R-PEN/5B", "スプラマニューバー", "スプラマニューバーコラボ", "スパッタリー",
+    "スパッタリー・ヒュー", "クアッドホッパーブラック", "クアッドホッパーホワイト", "ケルビン525", "ケルビン525デコ",
+    "デュアルスイーパー", "デュアルスイーパーカスタム", "ガエンFF", "ガエンFF15"
+  ];
 
   const gearList = [
-    "インク効率アップ(メイン)", "インク効率アップ(サブ)", "インク回復力アップ", "ヒト移動速度アップ", "イカダッシュ速度アップ", "スペシャル増加量アップ", "スペシャル減少量ダウン",
-    "スペシャル性能アップ", "復活時間短縮", "スーパージャンプ時間短縮", "サブ性能アップ", "相手インク影響軽減", "サブ影響軽減", "アクション強化"
+    "インク効率アップ(メイン)", "インク効率アップ(サブ)", "インク回復力アップ", "ヒト移動速度アップ", "イカダッシュ速度アップ",
+    "スペシャル増加量アップ", "スペシャル減少量ダウン", "スペシャル性能アップ", "復活時間短縮", "スーパージャンプ時間短縮",
+    "サブ性能アップ", "相手インク影響軽減", "サブ影響軽減", "アクション強化"
   ];
 
   function runRoulette() {
-  const inputs = document.querySelectorAll('#nameInputs input');
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = "";
+    const inputs = document.querySelectorAll('#nameInputs input');
+    const resultsDiv = document.getElementById('results');
+    resultsDiv.innerHTML = "";
 
-  inputs.forEach((input, index) => {
-    const name = input.value || `プレイヤー${index + 1}`;
-    const weapon = weapons[Math.floor(Math.random() * weapons.length)];
-    const gear = gearList[Math.floor(Math.random() * gearList.length)];
+    inputs.forEach((input, index) => {
+      const name = input.value || `プレイヤー${index + 1}`;
+      const weapon = weapons[Math.floor(Math.random() * weapons.length)];
+      const gear = gearList[Math.floor(Math.random() * gearList.length)];
 
-    resultsDiv.innerHTML += `
-      <div class="player-block">
-        <p><strong>${name}：</strong></p>
-        <p>武器：${weapon}</p>
-        <p>ギア：${gear}</p>
-      </div>
-    `;
-  });
-}</script>
+      const card = document.createElement("div");
+      card.className = "card";
+      card.innerHTML = `
+        <strong>${name}</strong>
+        武器：${weapon}<br>
+        ギア：${gear}
+      `;
+      resultsDiv.appendChild(card);
+    });
+  }
+</script>
 
 </body>
 </html>
