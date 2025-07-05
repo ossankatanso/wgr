@@ -5,27 +5,25 @@
   <title>武器ギアルーレット</title>
   <style>
     body { font-family: sans-serif; background: #e7f4ff; text-align: center; padding: 20px; }
-    input { margin: 5px; width: 200px; }
-    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; }
-    .result { margin-top: 20px; font-size: 18px; }
+    #nameInputs { margin-bottom: 20px; }
+    #nameInputs p { margin-bottom: 15px; }
+    input[type="text"] { margin: 5px; width: 200px; padding: 5px; }
+    .options { margin-bottom: 20px; font-size: 16px; }
+    .options label { cursor: pointer; } /* ラベルをクリックしやすくする */
+    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    .result { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    .player-block {
+      text-align: left;
+      background: #ffffff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px 15px;
+      width: 300px;
+      font-size: 16px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .player-block p { margin: 4px 0; }
   </style>
-  <style>
-  .player-block {
-    text-align: left;
-    display: inline-block;
-    background: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    padding: 10px 15px;
-    margin: 10px auto;
-    width: 300px;
-    font-size: 16px;
-  }
-  .player-block p {
-    margin: 4px 0;
-  }
-</style>
-
 </head>
 <body>
 
@@ -41,6 +39,11 @@
   <input type="text" placeholder="プレイヤー6"><br>
   <input type="text" placeholder="プレイヤー7"><br>
   <input type="text" placeholder="プレイヤー8"><br>
+</div>
+
+<div class="options">
+  <input type="checkbox" id="addNewWeapons">
+  <label for="addNewWeapons">☑️ 10.0.0の新武器を追加する</label>
 </div>
 
 <button onclick="runRoulette()">ルーレット開始！</button>
@@ -192,30 +195,44 @@
   "ガエンFF15",
 ];
 
+// 10.0.0の新武器リスト
+  const newWeapons = [ 'シャープマーカーGECK', 'カーボンローラーANGL', 'スパッタリーOWL', 'フィンセントBRNZ', 'ヒッセンASH', 'ドライブワイパーRUST', 'スプラチャージャーFRST', 'スプラスコープFRST', 'プライムシューターFRZN', 'RブラスターエリートWNTR', 'ジェットスイーパーCOBR', 'スプラスピナーPYTN', 'H3リールガンSNAK', 'LACT-450MILK', 'キャンピングシェルターCREM', 'スプラシューター煌', 'ホットブラスター艶', 'プロモデラー彩', '.96ガロン爪', 'モップリン角', 'デュアルスイーパー蹄', 'ジムワイパー封', 'ハイドラント圧', 'スパイガジェット繚', 'スプラマニューバー耀', 'ワイドローラー惑', 'L3リールガン箔', 'ホクサイ彗', 'トライストリンガー燈', 'ダイナモローラー冥' ];
+
   const gearList = [
     "インク効率アップ(メイン)", "インク効率アップ(サブ)", "インク回復力アップ", "ヒト移動速度アップ", "イカダッシュ速度アップ", "スペシャル増加量アップ", "スペシャル減少量ダウン",
     "スペシャル性能アップ", "復活時間短縮", "スーパージャンプ時間短縮", "サブ性能アップ", "相手インク影響軽減", "サブ影響軽減", "アクション強化"
   ];
 
   function runRoulette() {
-  const inputs = document.querySelectorAll('#nameInputs input');
-  const resultsDiv = document.getElementById('results');
-  resultsDiv.innerHTML = "";
+    const inputs = document.querySelectorAll('#nameInputs input');
+    const resultsDiv = document.getElementById('results');
+    const addNewWeaponsCheckbox = document.getElementById('addNewWeapons');
+    resultsDiv.innerHTML = "";
 
-  inputs.forEach((input, index) => {
-    const name = input.value || `プレイヤー${index + 1}`;
-    const weapon = weapons[Math.floor(Math.random() * weapons.length)];
-    const gear = gearList[Math.floor(Math.random() * gearList.length)];
+    // ★変更点：チェックボックスの状態に応じて、使用する武器リストを決定
+    let activeWeapons = [...weapons]; // まず元の武器リストをコピー
+    if (addNewWeaponsCheckbox.checked) {
+      // チェックが入っていたら、新しい武器リストを結合する
+      activeWeapons = activeWeapons.concat(newWeapons);
+    }
 
-    resultsDiv.innerHTML += `
-      <div class="player-block">
-        <p><strong>${name}：</strong></p>
-        <p>武器：${weapon}</p>
-        <p>ギア：${gear}</p>
-      </div>
-    `;
-  });
-}</script>
+    inputs.forEach((input, index) => {
+      const name = input.value || `プレイヤー${index + 1}`;
+      
+      // ★変更点：動的に作成したactiveWeaponsから武器を選ぶ
+      const weapon = activeWeapons[Math.floor(Math.random() * activeWeapons.length)];
+      const gear = gearList[Math.floor(Math.random() * gearList.length)];
+
+      resultsDiv.innerHTML += `
+        <div class="player-block">
+          <p><strong>${name}：</strong></p>
+          <p>武器：${weapon}</p>
+          <p>ギア：${gear}</p>
+        </div>
+      `;
+    });
+  }
+</script>
 
 </body>
 </html>
