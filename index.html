@@ -2,47 +2,191 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>武器ギアルーレット</title>
+  <title>武器ギアルーレット (v5 - 無印/亜種 追加)</title>
   <style>
-    body { font-family: sans-serif; background: #e7f4ff; text-align: center; padding: 20px; }
-    #nameInputs { margin-bottom: 20px; }
-    #nameInputs p { margin-bottom: 15px; }
-    input[type="text"] { margin: 5px; width: 200px; padding: 5px; }
-    .options { margin-bottom: 20px; font-size: 16px; }
-    .options label { cursor: pointer; }
-    button { margin-top: 10px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    .result { margin-top: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+    body {
+      font-family: 'Helvetica Neue', Arial, 'Hiragino Kaku Gothic ProN', 'Hiragino Sans', Meiryo, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+      margin: 0;
+    }
+    h1 {
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      display: inline-block;
+      padding-bottom: 5px;
+      margin-top: 0;
+    }
+
+    /* 設定エリア */
+    .config-area {
+      background: #fff;
+      padding: 20px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin: 20px auto;
+      text-align: left;
+    }
+    
+    /* 名前入力欄 (グリッドレイアウト) */
+    #nameInputs {
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    #nameInputs p {
+      grid-column: 1 / -1; /* 説明文は全幅 */
+      text-align: center;
+      margin: 0 0 10px 0;
+      font-size: 1.1em;
+      font-weight: bold;
+      color: #2c3e50;
+    }
+    input[type="text"] {
+      margin: 0;
+      width: 100%;
+      padding: 10px;
+      box-sizing: border-box; /* paddingを含めて幅計算 */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+    
+    /* オプション設定 */
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 15px;
+      align-items: center;
+    }
+    .options {
+      font-size: 16px;
+    }
+    .options label { cursor: pointer; margin-left: 5px; }
+    .options select {
+      padding: 8px;
+      font-size: 15px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-left: 5px;
+    }
+
+    /* ボタン */
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.1s;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    button:active {
+      transform: scale(0.98);
+    }
+
+    /* 結果表示 */
+    .result {
+      margin-top: 25px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+    }
     .player-block {
       text-align: left;
       background: #ffffff;
-      border: 1px solid #ccc;
+      border: 1px solid #ddd;
       border-radius: 8px;
-      padding: 10px 15px;
-      width: 300px;
+      padding: 15px 20px;
+      width: 320px;
       font-size: 16px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.08);
     }
-    .player-block p { margin: 4px 0; }
+    .player-block .player-name {
+      font-size: 1.25em;
+      font-weight: bold;
+      color: #3498db;
+      border-bottom: 2px solid #f0f2f5;
+      padding-bottom: 8px;
+      margin: 0 0 10px 0;
+    }
+    .player-block .weapon {
+      font-weight: bold;
+      color: #e67e22; /* 武器を強調 */
+    }
+    .player-block .gear-title {
+      font-weight: bold;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .player-block .gear-list p {
+      margin: 4px 0 4px 15px;
+      font-size: 0.95em;
+      line-height: 1.4;
+    }
   </style>
 </head>
 <body>
 
-<h1>武器ギアルーレット</h1>
+<h1>武器ギアルーレット (Splatoon 3)</h1>
 
-<div id="nameInputs">
-  <p>8人分の名前を入力してね（空欄でもOK）</p>
-  <input type="text" placeholder="プレイヤー1"><br>
-  <input type="text" placeholder="プレイヤー2"><br>
-  <input type="text" placeholder="プレイヤー3"><br>
-  <input type="text" placeholder="プレイヤー4"><br>
-  <input type="text" placeholder="プレイヤー5"><br>
-  <input type="text" placeholder="プレイヤー6"><br>
-  <input type="text" placeholder="プレイヤー7"><br>
-  <input type="text" placeholder="プレイヤー8"><br>
-</div>
+<div class="config-area">
+  <div id="nameInputs">
+    <p>8人分の名前を入力（空欄でもOK）</p>
+    <input type="text" placeholder="プレイヤー1">
+    <input type="text" placeholder="プレイヤー2">
+    <input type="text" placeholder="プレイヤー3">
+    <input type="text" placeholder="プレイヤー4">
+    <input type="text" placeholder="プレイヤー5">
+    <input type="text" placeholder="プレイヤー6">
+    <input type="text" placeholder="プレイヤー7">
+    <input type="text" placeholder="プレイヤー8">
+  </div>
 
-<div class="options">
-  <input type="checkbox" id="addNewWeapons">
-  <label for="addNewWeapons">☑️ Ver10.0.0の新武器を追加する</label>
+  <div class="options-grid">
+    <div class="options">
+      <label for="weaponType">武器種：</label>
+      <select id="weaponType">
+        <option value="all">すべて (新武器含む)</option>
+        <option value="mujirushi">無印のみ</option>
+        <option value="variant">亜種のみ</option>
+        <option value="newOnly">新武器のみ (Ver10.0.0)</option>
+        <optgroup label="武器種でしぼる">
+          <option value="シューター">シューター</option>
+          <option value="ブラスター">ブラスター</option>
+          <option value="ローラー">ローラー</option>
+          <option value="フデ">フデ</option>
+          <option value="チャージャー">チャージャー</option>
+          <option value="スロッシャー">スロッシャー</option>
+          <option value="スピナー">スピナー</option>
+          <option value="マニューバー">マニューバー</option>
+          <option value="シェルター">シェルター</option>
+          <option value="ストリンガー">ストリンガー</option>
+          <option value="ワイパー">ワイパー</option>
+        </optgroup>
+      </select>
+    </div>
+
+    <div class="options">
+      <label for="gearMode">ギア構成：</label>
+      <select id="gearMode">
+        <option value="mainOnly">メイン1種のみ (共通ギア)</option>
+        <option value="fullSet">アタマ・フク・クツ (専用ギア含む)</option>
+      </select>
+    </div>
+
+  </div>
 </div>
 
 <button onclick="runRoulette()">ルーレット開始！</button>
@@ -50,31 +194,156 @@
 <div id="results" class="result"></div>
 
 <script>
-  const weapons = [ "わかばシューター", "もみじシューター", "スプラシューター", "スプラシューターコラボ", "プロモデラーMG", "プロモデラーRG", "N-ZAP85", "N-ZAP89", "シャープマーカー", "シャープマーカーコラボ", "52ガロン", "52ガロンデコ", "96ガロン", "96ガロンデコ", "ジェットスイーパー", "ジェットスイーパーカスタム", "プライムシューター", "プライムシューターコラボ", "ボールドマーカー", "ボールドマーカーネオ", "L3リールガン", "L3リールガンD", "H3リールガン", "H3リールガンD", "ボトルガイザー", "ボトルガイザーフォイル", "スペースシューター", "スペースシューターコラボ", "ホットブラスター", "ホットブラスターカスタム", "ロングブラスター", "ロングブラスターカスタム", "ラピッドブラスター", "ラピッドブラスターデコ", "Rブラスターエリート", "Rブラスターエリートデコ", "クラッシュブラスター", "クラッシュブラスターネオ", "ノヴァブラスター", "ノヴァブラスターネオ", "S-BLAST92", "S-BLAST91", "バケットスロッシャー", "バケットスロッシャーデコ", "ヒッセン", "ヒッセン・ヒュー", "スクリュースロッシャー", "スクリュースロッシャーネオ", "エクスプロッシャー", "エクスプロッシャーカスタム", "オーバーフロッシャー", "オーバーフロッシャーデコ", "モップリン", "モップリンD", "バレルスピナー", "バレルスピナーデコ", "スプラスピナー", "スプラスピナーコラボ", "ハイドラント", "ハイドラントカスタム", "クーゲルシュライバー", "クーゲルシュライバー・ヒュー", "ノーチラス47", "ノーチラス79", "イグザミナー", "イグザミナー・ヒュー", "ホクサイ", "ホクサイ・ヒュー", "パブロ", "パブロ・ヒュー", "フィンセント", "フィンセント・ヒュー", "ドライブワイパー", "ドライブワイパーデコ", "ジムワイパー", "ジムワイパーヒュー", "デンタルワイパーミント", "デンタルワイパースミ", "トライストリンガー", "トライストリンガーコラボ", "LACT-450", "LACT-450デコ", "フルイドV", "フルイドVカスタム", "パラシェルター", "パラシェルターソレーラ", "キャンピングシェルター", "キャンピングシェルターソレーラ", "スパイガジェット", "スパイガジェットソレーラ", "スパイガジェットベッチュー", "24式張替傘・甲", "24式張替傘・乙", "スプラローラー", "スプラローラーコラボ", "カーボンローラー", "カーボンローラーデコ", "ダイナモローラー", "ダイナモローラーテスラ", "ヴァリアブルローラー", "ヴァリアブルローラーフォイル", "ワイドローラー", "ワイドローラーコラボ", "スプラチャージャー", "スプラチャージャーコラボ", "スクイックリンα", "スクイックリンβ", "リッター4K", "リッター4Kカスタム", "4Kスコープ", "4Kスコープカスタム", "スプラスコープ", "スプラスコープコラボ", "ソイチューバー", "ソイチューバーカスタム", "14式竹筒銃・甲", "14式竹筒銃・乙", "R-PEN/5H", "R-PEN/5B", "スプラマニューバー", "スプラマニューバーコラボ", "スパッタリー", "スパッタリー・ヒュー", "クアッドホッパーブラック", "クアッドホッパーホワイト", "ケルビン525", "ケルビン525デコ", "デュアルスイーパー", "デュアルスイーパーカスタム", "ガエンFF", "ガエンFF15" ];
-  const newWeapons = [ 'シャープマーカーGECK', 'カーボンローラーANGL', 'スパッタリーOWL', 'フィンセントBRNZ', 'ヒッセンASH', 'ドライブワイパーRUST', 'スプラチャージャーFRST', 'スプラスコープFRST', 'プライムシューターFRZN', 'RブラスターエリートWNTR', 'ジェットスイーパーCOBR', 'スプラスピナーPYTN', 'H3リールガンSNAK', 'LACT-450MILK', 'キャンピングシェルターCREM', 'スプラシューター煌', 'ホットブラスター艶', 'プロモデラー彩', '.96ガロン爪', 'モップリン角', 'デュアルスイーパー蹄', 'ジムワイパー封', 'ハイドラント圧', 'スパイガジェット繚', 'スプラマニューバー耀', 'ワイドローラー惑', 'L3リールガン箔', 'ホクサイ彗', 'トライストリンガー燈', 'ダイナモローラー冥' ];
-  const gearList = [ "インク効率アップ(メイン)", "インク効率アップ(サブ)", "インク回復力アップ", "ヒト移動速度アップ", "イカダッシュ速度アップ", "スペシャル増加量アップ", "スペシャル減少量ダウン", "スペシャル性能アップ", "復活時間短縮", "スーパージャンプ時間短縮", "サブ性能アップ", "相手インク影響軽減", "サブ影響軽減", "アクション強化" ];
+  // ---------------------------------
+  // 武器データ (カテゴリ分け)
+  // ---------------------------------
+  let weaponsList = [
+    /* シューター */
+    { name: "わかばシューター", type: "シューター" }, { name: "もみじシューター", type: "シューター" }, { name: "スプラシューター", type: "シューター" }, { name: "スプラシューターコラボ", type: "シューター" }, { name: "プロモデラーMG", type: "シューター" }, { name: "プロモデラーRG", type: "シューター" }, { name: "N-ZAP85", type: "シューター" }, { name: "N-ZAP89", type: "シューター" }, { name: "シャープマーカー", type: "シューター" }, { name: "シャープマーカーコラボ", type: "シューター" }, { name: "52ガロン", type: "シューター" }, { name: "52ガロンデコ", type: "シューター" }, { name: "96ガロン", type: "シューター" }, { name: "96ガロンデコ", type: "シューター" }, { name: "ジェットスイーパー", type: "シューター" }, { name: "ジェットスイーパーカスタム", type: "シューター" }, { name: "プライムシューター", type: "シューター" }, { name: "プライムシューターコラボ", type: "シューター" }, { name: "ボールドマーカー", type: "シューター" }, { name: "ボールドマーカーネオ", type: "シューター" }, { name: "L3リールガン", type: "シューター" }, { name: "L3リールガンD", type: "シューター" }, { name: "H3リールガン", type: "シューター" }, { name: "H3リールガンD", type: "シューター" }, { name: "ボトルガイザー", type: "シューター" }, { name: "ボトルガイザーフォイル", type: "シューター" }, { name: "スペースシューター", type: "シューター" }, { name: "スペースシューターコラボ", type: "シューター" },
+    /* ブラスター */
+    { name: "ホットブラスター", type: "ブラスター" }, { name: "ホットブラスターカスタム", type: "ブラスター" }, { name: "ロングブラスター", type: "ブラスター" }, { name: "ロングブラスターカスタム", type: "ブラスター" }, { name: "ラピッドブラスター", type: "ブラスター" }, { name: "ラピッドブラスターデコ", type: "ブラスター" }, { name: "Rブラスターエリート", type: "ブラスター" }, { name: "Rブラスターエリートデコ", type: "ブラスター" }, { name: "クラッシュブラスター", type: "ブラスター" }, { name: "クラッシュブラスターネオ", type: "ブラスター" }, { name: "ノヴァブラスター", type: "ブラスター" }, { name: "ノヴァブラスターネオ", type: "ブラスター" }, { name: "S-BLAST92", type: "ブラスター" }, { name: "S-BLAST91", type: "ブラスター" },
+    /* スロッシャー */
+    { name: "バケットスロッシャー", type: "スロッシャー" }, { name: "バケットスロッシャーデコ", type: "スロッシャー" }, { name: "ヒッセン", type: "スロッシャー" }, { name: "ヒッセン・ヒュー", type: "スロッシャー" }, { name: "スクリュースロッシャー", type: "スロッシャー" }, { name: "スクリュースロッシャーネオ", type: "スロッシャー" }, { name: "エクスプロッシャー", type: "スロッシャー" }, { name: "エクスプロッシャーカスタム", type: "スロッシャー" }, { name: "オーバーフロッシャー", type: "スロッシャー" }, { name: "オーバーフロッシャーデコ", type: "スロッシャー" }, { name: "モップリン", type: "スロッシャー" }, { name: "モップリンD", type: "スロッシャー" },
+    /* スピナー */
+    { name: "バレルスピナー", type: "スピナー" }, { name: "バレルスピナーデコ", type: "スピナー" }, { name: "スプラスピナー", type: "スピナー" }, { name: "スプラスピナーコラボ", type: "スピナー" }, { name: "ハイドラント", type: "スピナー" }, { name: "ハイドラントカスタム", type: "スピナー" }, { name: "クーゲルシュライバー", type: "スピナー" }, { name: "クーゲルシュライバー・ヒュー", type: "スピナー" }, { name: "ノーチラス47", type: "スピナー" }, { name: "ノーチラス79", type: "スピナー" }, { name: "イグザミナー", type: "スピナー" }, { name: "イグザミナー・ヒュー", type: "スピナー" },
+    /* フデ */
+    { name: "ホクサイ", type: "フデ" }, { name: "ホクサイ・ヒュー", type: "フデ" }, { name: "パブロ", type: "フデ" }, { name: "パブロ・ヒュー", type: "フデ" }, { name: "フィンセント", type: "フデ" }, { name: "フィンセント・ヒュー", type: "フデ" },
+    /* ワイパー */
+    { name: "ドライブワイパー", type: "ワイパー" }, { name: "ドライブワイパーデコ", type: "ワイパー" }, { name: "ジムワイパー", type: "ワイパー" }, { name: "ジムワイパーヒュー", type: "ワイパー" }, { name: "デンタルワイパーミント", type: "ワイパー" }, { name: "デンタルワイパースミ", type: "ワイパー" },
+    /* ストリンガー */
+    { name: "トライストリンガー", type: "ストリンガー" }, { name: "トライストリンガーコラボ", type: "ストリンガー" }, { name: "LACT-450", type: "ストリンガー" }, { name: "LACT-450デコ", type: "ストリンガー" }, { name: "フルイドV", type: "ストリンガー" }, { name: "フルイドVカスタム", type: "ストリンガー" },
+    /* シェルター */
+    { name: "パラシェルター", type: "シェルター" }, { name: "パラシェルターソレーラ", type: "シェルター" }, { name: "キャンピングシェルター", type: "シェルター" }, { name: "キャンピングシェルターソレーラ", type: "シェルター" }, { name: "スパイガジェット", type: "シェルター" }, { name: "スパイガジェットソレーラ", type: "シェルター" }, { name: "スパイガジェットベッチュー", type: "シェルター" }, { name: "24式張替傘・甲", type: "シェルター" }, { name: "24式張替傘・乙", type: "シェルター" },
+    /* ローラー */
+    { name: "スプラローラー", type: "ローラー" }, { name: "スプラローラーコラボ", type: "ローラー" }, { name: "カーボンローラー", type: "ローラー" }, { name: "カーボンローラーデコ", type: "ローラー" }, { name: "ダイナモローラー", type: "ローラー" }, { name: "ダイナモローラーテスラ", type: "ローラー" }, { name: "ヴァリアブルローラー", type: "ローラー" }, { name: "ヴァリアブルローラーフォイル", type: "ローラー" }, { name: "ワイドローラー", type: "ローラー" }, { name: "ワイドローラーコラボ", type: "ローラー" },
+    /* チャージャー */
+    { name: "スプラチャージャー", type: "チャージャー" }, { name: "スプラチャージャーコラボ", type: "チャージャー" }, { name: "スクイックリンα", type: "チャージャー" }, { name: "スクイックリンβ", type: "チャージャー" }, { name: "リッター4K", type: "チャージャー" }, { name: "リッター4Kカスタム", type: "チャージャー" }, { name: "4Kスコープ", type: "チャージャー" }, { name: "4Kスコープカスタム", type: "チャージャー" }, { name: "スプラスコープ", type: "チャージャー" }, { name: "スプラスコープコラボ", type: "チャージャー" }, { name: "ソイチューバー", type: "チャージャー" }, { name: "ソイチューバーカスタム", type: "チャージャー" }, { name: "14式竹筒銃・甲", type: "チャージャー" }, { name: "14式竹筒銃・乙", type: "チャージャー" }, { name: "R-PEN/5H", type: "チャージャー" }, { name: "R-PEN/5B", type: "チャージャー" },
+    /* マニューバー */
+    { name: "スプラマニューバー", type: "マニューバー" }, { name: "スプラマニューバーコラボ", type: "マニューバー" }, { name: "スパッタリー", type: "マニューバー" }, { name: "スパッタリー・ヒュー", type: "マニューバー" }, { name: "クアッドホッパーブラック", type: "マニューバー" }, { name: "クアッドホッパーホワイト", type: "マニューバー" }, { name: "ケルビン525", type: "マニューバー" }, { name: "ケルビン525デコ", type: "マニューバー" }, { name: "デュアルスイーパー", type: "マニューバー" }, { name: "デュアルスイーパーカスタム", type: "マニューバー" }, { name: "ガエンFF", type: "マニューバー" }, { name: "ガエンFF15", type: "マニューバー" }
+  ];
 
+  // ---------------------------------
+  // 新武器データ (Ver10.0.0)
+  // ---------------------------------
+  let newWeaponsList = [
+    { name: 'シャープマーカーGECK', type: "シューター", isNew: true }, { name: 'カーボンローラーANGL', type: "ローラー", isNew: true }, { name: 'スパッタリーOWL', type: "マニューバー", isNew: true }, { name: 'フィンセントBRNZ', type: "フデ", isNew: true }, { name: 'ヒッセンASH', type: "スロッシャー", isNew: true }, { name: 'ドライブワイパーRUST', type: "ワイパー", isNew: true }, { name: 'スプラチャージャーFRST', type: "チャージャー", isNew: true }, { name: 'スプラスコープFRST', type: "チャージャー", isNew: true }, { name: 'プライムシューターFRZN', type: "シューター", isNew: true }, { name: 'RブラスターエリートWNTR', type: "ブラスター", isNew: true }, { name: 'ジェットスイーパーCOBR', type: "シューター", isNew: true }, { name: 'スプラスピナーPYTN', type: "スピナー", isNew: true }, { name: 'H3リールガンSNAK', type: "シューター", isNew: true }, { name: 'LACT-450MILK', type: "ストリンガー", isNew: true }, { name: 'キャンピングシェルターCREM', type: "シェルター", isNew: true }, { name: 'スプラシューター煌', type: "シューター", isNew: true }, { name: 'ホットブラスター艶', type: "ブラスター", isNew: true }, { name: 'プロモデラー彩', type: "シューター", isNew: true }, { name: '.96ガロン爪', type: "シューター", isNew: true }, { name: 'モップリン角', type: "スロッシャー", isNew: true }, { name: 'デュアルスイーパー蹄', type: "マニューバー", isNew: true }, { name: 'ジムワイパー封', type: "ワイパー", isNew: true }, { name: 'ハイドラント圧', type: "スピナー", isNew: true }, { name: 'スパイガジェット繚', type: "シェルター", isNew: true }, { name: 'スプラマニューバー耀', type: "マニューバー", isNew: true }, { name: 'ワイドローラー惑', type: "ローラー", isNew: true }, { name: 'L3リールガン箔', type: "シューター", isNew: true }, { name: 'ホクサイ彗', type: "フデ", isNew: true }, { name: 'トライストリンガー燈', type: "ストリンガー", isNew: true }, { name: 'ダイナモローラー冥', type: "ローラー", isNew: true }
+  ];
+
+  // ---------------------------------
+  // ★ 無印/亜種の判定処理 ★
+  // ---------------------------------
+  // 「無印」とみなす武器名のリスト
+  const mujirushiNames = new Set([
+    "わかばシューター", "もみじシューター", "スプラシューター", "プロモデラーMG", "N-ZAP85", "シャープマーカー", "52ガロン", "96ガロン", "ジェットスイーパー", "プライムシューター", "ボールドマーカー", "L3リールガン", "H3リールガン", "ボトルガイザー", "スペースシューター", "ホットブラスター", "ロングブラスター", "ラピッドブラスター", "Rブラスターエリート", "クラッシュブラスター", "ノヴァブラスター", "S-BLAST92", "バケットスロッシャー", "ヒッセン", "スクリュースロッシャー", "エクスプロッシャー", "オーバーフロッシャー", "モップリン", "バレルスピナー", "スプラスピナー", "ハイドラント", "クーゲルシュライバー", "ノーチラス47", "イグザミナー", "ホクサイ", "パブロ", "フィンセント", "ドライブワイパー", "ジムワイパー", "デンタルワイパーミント", "トライストリンガー", "LACT-450", "フルイドV", "パラシェルター", "キャンピングシェルター", "スパイガジェット", "24式張替傘・甲", "スプラローラー", "カーボンローラー", "ダイナモローラー", "ヴァリアブルローラー", "ワイドローラー", "スプラチャージャー", "スクイックリンα", "リッター4K", "4Kスコープ", "スプラスコープ", "ソイチューバー", "14式竹筒銃・甲", "R-PEN/5H", "スプラマニューバー", "スパッタリー", "クアッドホッパーブラック", "ケルビン525", "デュアルスイーパー", "ガエンFF"
+  ]);
+
+  // 全武器リストに 'variant' (派生) フラグを付与する
+  function addVariantFlag(weapon) {
+    if (mujirushiNames.has(weapon.name)) {
+      weapon.variant = '無印';
+    } else {
+      weapon.variant = '亜種';
+    }
+    return weapon;
+  }
+
+  weaponsList = weaponsList.map(addVariantFlag);
+  newWeaponsList = newWeaponsList.map(addVariantFlag);
+  
+  // ---------------------------------
+  // ギアパワーデータ
+  // ---------------------------------
+  const commonGearList = [
+    "インク効率アップ(メイン)", "インク効率アップ(サブ)", "インク回復力アップ", 
+    "ヒト移動速度アップ", "イカダッシュ速度アップ", "スペシャル増加量アップ", 
+    "スペシャル減少量ダウン", "スペシャル性能アップ", "復活時間短縮", 
+    "スーパージャンプ時間短縮", "サブ性能アップ", "相手インク影響軽減", 
+    "サブ影響軽減", "アクション強化"
+  ];
+  const headGearList = [
+    "スタートダッシュ", "ラストスパート", "逆境強化", "カムバック"
+  ];
+  const clothingGearList = [
+    "イカニンジャ", "リベンジ", "サーマルインク", "復活ペナルティアップ", "追加ギアパワー倍化"
+  ];
+  const shoesGearList = [
+    "ステルスジャンプ", "対物攻撃力アップ", "受け身術"
+  ];
+
+  // ---------------------------------
+  // ルーレット実行関数
+  // ---------------------------------
   function runRoulette() {
     const inputs = document.querySelectorAll('#nameInputs input');
     const resultsDiv = document.getElementById('results');
-    const addNewWeaponsCheckbox = document.getElementById('addNewWeapons');
     resultsDiv.innerHTML = "";
 
-    let activeWeapons = [...weapons];
-    if (addNewWeaponsCheckbox.checked) {
-      activeWeapons = activeWeapons.concat(newWeapons);
+    // オプション取得
+    const weaponType = document.getElementById('weaponType').value;
+    const gearMode = document.getElementById('gearMode').value;
+    
+    // 1. 抽選対象の武器リストを作成
+    let allWeapons = [...weaponsList, ...newWeaponsList];
+    let availableWeapons = [];
+
+    if (weaponType === 'all') {
+      availableWeapons = allWeapons; // 「すべて」は新武器も自動で含む
+    } else if (weaponType === 'newOnly') {
+      availableWeapons = newWeaponsList;
+    } else if (weaponType === 'mujirushi') {
+      // 「無印」でフィルタ (新武器も含む)
+      availableWeapons = allWeapons.filter(w => w.variant === '無印');
+    } else if (weaponType === 'variant') {
+      // 「亜種」でフィルタ (新武器も含む)
+      availableWeapons = allWeapons.filter(w => w.variant === '亜種');
+    } else {
+      // 'シューター' や 'ローラー' などが選択された場合
+      availableWeapons = allWeapons.filter(w => w.type === weaponType);
     }
 
+    // 該当武器がない場合の処理
+    if (availableWeapons.length === 0) {
+      resultsDiv.innerHTML = "<p>該当する武器がありませんでした。設定を見直してください。</p>";
+      return;
+    }
+
+    // 2. プレイヤーごとに抽選
     inputs.forEach((input, index) => {
       const name = input.value || `プレイヤー${index + 1}`;
-      const weapon = activeWeapons[Math.floor(Math.random() * activeWeapons.length)];
-      const gear = gearList[Math.floor(Math.random() * gearList.length)];
+      
+      // 武器を抽選
+      const weapon = availableWeapons[Math.floor(Math.random() * availableWeapons.length)];
+      
+      // ギアを抽選
+      let gearResultHTML = "";
+      if (gearMode === 'mainOnly') {
+        // メイン1種のみ：【共通ギア】からランダムで1つ
+        const gear = commonGearList[Math.floor(Math.random() * commonGearList.length)];
+        gearResultHTML = `<p class="gear-title">ギア： ${gear}</p>`;
+      } else if (gearMode === 'fullSet') {
+        // フルセット：各部位の専用ギア＋共通ギアからランダムで1つずつ
+        const availableHeadGear = commonGearList.concat(headGearList);
+        const availableClothingGear = commonGearList.concat(clothingGearList);
+        const availableShoesGear = commonGearList.concat(shoesGearList);
+        
+        const gear1 = availableHeadGear[Math.floor(Math.random() * availableHeadGear.length)];
+        const gear2 = availableClothingGear[Math.floor(Math.random() * availableClothingGear.length)];
+        const gear3 = availableShoesGear[Math.floor(Math.random() * availableShoesGear.length)];
+        gearResultHTML = `
+          <div class="gear-list">
+            <p>アタマ： ${gear1}</p>
+            <p>フク　： ${gear2}</p>
+            <p>クツ　： ${gear3}</p>
+          </div>
+        `;
+      }
 
+      // 3. 結果を表示
       resultsDiv.innerHTML += `
         <div class="player-block">
-          <p><strong>${name}：</strong></p>
-          <p>武器：${weapon}</p>
-          <p>ギア：${gear}</p>
+          <p class="player-name"><strong>${name}</strong></p>
+          <p>武器：<span class="weapon">${weapon.name}</span></p>
+          ${gearResultHTML}
         </div>
       `;
     });
